@@ -163,7 +163,7 @@ final class ImageLoader extends StatelessWidget
           props: this,
         );
       case ImageSourceKind.network:
-      case ImageSourceKind.firebaseStorage:
+      // case ImageSourceKind.firebaseStorage:
         return CachedImageLoader(
           key: ValueKey<String>(source.canonicalIdentity),
           source: source,

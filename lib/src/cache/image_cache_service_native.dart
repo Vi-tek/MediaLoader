@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:firebase_storage/firebase_storage.dart';
+// import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path_provider/path_provider.dart';
 import '../core/image_cache_identity.dart';
 import '../core/image_media_detector.dart';
@@ -480,26 +480,26 @@ final class NativeImageCacheService implements ImageCacheService {
     return _resolveLegacyFile(source);
   }
 
-  Future<File> getImageFromFirebase(Reference reference) {
-    return _resolveLegacyFile(_sourceFromReference(reference));
-  }
+  // Future<File> getImageFromFirebase(Reference reference) {
+  //   return _resolveLegacyFile(_sourceFromReference(reference));
+  // }
 
-  Future<File?> revalidateFirebaseImage(Reference reference) async {
-    final source = _sourceFromReference(reference);
-    final before = peekRemote(
-      source,
-      cacheDuration: Duration.zero,
-      includeStale: true,
-    );
-    final refreshed = await resolveRemote(
-      source,
-      cacheDuration: Duration.zero,
-      allowStaleOnError: true,
-    );
-    if (before?.generation == refreshed.generation) return null;
-    final directory = await _cacheDirectory();
-    return _fileForResource(directory, refreshed);
-  }
+  // Future<File?> revalidateFirebaseImage(Reference reference) async {
+  //   final source = _sourceFromReference(reference);
+  //   final before = peekRemote(
+  //     source,
+  //     cacheDuration: Duration.zero,
+  //     includeStale: true,
+  //   );
+  //   final refreshed = await resolveRemote(
+  //     source,
+  //     cacheDuration: Duration.zero,
+  //     allowStaleOnError: true,
+  //   );
+  //   if (before?.generation == refreshed.generation) return null;
+  //   final directory = await _cacheDirectory();
+  //   return _fileForResource(directory, refreshed);
+  // }
 
   Future<File> _resolveLegacyFile(ResolvedImageSource source) async {
     final resource = await resolveRemote(source);

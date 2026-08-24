@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'dart:typed_data';
 
-import 'package:firebase_storage/firebase_storage.dart';
+// import 'package:firebase_storage/firebase_storage.dart';
 import 'package:http/http.dart' as http;
+
 import '../core/image_source.dart';
 
 import 'image_download.dart';
@@ -11,14 +12,14 @@ import 'image_downloader.dart';
 final class DefaultImageDownloader implements ImageDownloader {
   DefaultImageDownloader({
     http.Client? httpClient,
-    FirebaseStorage? firebaseStorage,
-  })  : _httpClient = httpClient ?? http.Client(),
-        _ownsHttpClient = httpClient == null,
-        _firebaseStorage = firebaseStorage;
+    // FirebaseStorage? firebaseStorage,
+  }) : _httpClient = httpClient ?? http.Client(),
+       _ownsHttpClient = httpClient == null;
+  // _firebaseStorage = firebaseStorage;
 
   final http.Client _httpClient;
   final bool _ownsHttpClient;
-  final FirebaseStorage? _firebaseStorage;
+  // final FirebaseStorage? _firebaseStorage;
 
   @override
   Future<DownloadedImage> download(
@@ -28,8 +29,8 @@ final class DefaultImageDownloader implements ImageDownloader {
     switch (source.kind) {
       case ImageSourceKind.network:
         return _downloadHttp(source, request);
-      case ImageSourceKind.firebaseStorage:
-        return _downloadFirebase(source, request);
+      // case ImageSourceKind.firebaseStorage:
+      //   return _downloadFirebase(source, request);
       case ImageSourceKind.invalid:
       case ImageSourceKind.asset:
       case ImageSourceKind.file:
@@ -101,7 +102,7 @@ final class DefaultImageDownloader implements ImageDownloader {
     final builder = BytesBuilder(copy: false);
     var received = 0;
     await for (final chunk in response.stream.timeout(request.timeout)) {
-      received += chunk.length;
+      received += chunk.length as int;
       if (received > request.maxBytes) {
         throw ImageDownloadException(
           'Image exceeds the configured ${request.maxBytes}-byte limit.',
@@ -123,56 +124,56 @@ final class DefaultImageDownloader implements ImageDownloader {
     );
   }
 
-  Future<DownloadedImage> _downloadFirebase(
-    ResolvedImageSource source,
-    ImageDownloadRequest request,
-  ) async {
-    final storage = _firebaseStorage ?? FirebaseStorage.instance;
-    final reference = storage.refFromURL(source.normalized);
-    final metadata = await reference.getMetadata().timeout(request.timeout);
-    final generation = metadata.generation;
+  // Future<DownloadedImage> _downloadFirebase(
+  //   ResolvedImageSource source,
+  //   ImageDownloadRequest request,
+  // ) async {
+  //   final storage = _firebaseStorage ?? FirebaseStorage.instance;
+  //   final reference = storage.refFromURL(source.normalized);
+  //   final metadata = await reference.getMetadata().timeout(request.timeout);
+  //   final generation = metadata.generation;
 
-    if (generation != null && generation == request.firebaseGeneration) {
-      return DownloadedImage(
-        notModified: true,
-        statusCode: 304,
-        finalUri: source.uri,
-        contentType: metadata.contentType,
-        etag: metadata.md5Hash,
-        lastModified: metadata.updated?.toUtc().toIso8601String(),
-        remoteGeneration: generation,
-        declaredContentLength: metadata.size,
-      );
-    }
+  //   if (generation != null && generation == request.firebaseGeneration) {
+  //     return DownloadedImage(
+  //       notModified: true,
+  //       statusCode: 304,
+  //       finalUri: source.uri,
+  //       contentType: metadata.contentType,
+  //       etag: metadata.md5Hash,
+  //       lastModified: metadata.updated?.toUtc().toIso8601String(),
+  //       remoteGeneration: generation,
+  //       declaredContentLength: metadata.size,
+  //     );
+  //   }
 
-    final declaredSize = metadata.size;
-    if (declaredSize != null && declaredSize > request.maxBytes) {
-      throw ImageDownloadException(
-        'Image exceeds the configured ${request.maxBytes}-byte limit.',
-      );
-    }
+  //   final declaredSize = metadata.size;
+  //   if (declaredSize != null && declaredSize > request.maxBytes) {
+  //     throw ImageDownloadException(
+  //       'Image exceeds the configured ${request.maxBytes}-byte limit.',
+  //     );
+  //   }
 
-    final bytes = await reference
-        .getData(request.maxBytes)
-        .timeout(request.timeout);
-    if (bytes == null) {
-      throw const ImageDownloadException(
-        'Firebase Storage returned no image bytes.',
-      );
-    }
+  //   final bytes = await reference
+  //       .getData(request.maxBytes)
+  //       .timeout(request.timeout);
+  //   if (bytes == null) {
+  //     throw const ImageDownloadException(
+  //       'Firebase Storage returned no image bytes.',
+  //     );
+  //   }
 
-    return DownloadedImage(
-      notModified: false,
-      statusCode: 200,
-      finalUri: source.uri,
-      contentType: metadata.contentType,
-      etag: metadata.md5Hash,
-      lastModified: metadata.updated?.toUtc().toIso8601String(),
-      remoteGeneration: generation,
-      declaredContentLength: metadata.size,
-      bytes: Uint8List.fromList(bytes),
-    );
-  }
+  //   return DownloadedImage(
+  //     notModified: false,
+  //     statusCode: 200,
+  //     finalUri: source.uri,
+  //     contentType: metadata.contentType,
+  //     etag: metadata.md5Hash,
+  //     lastModified: metadata.updated?.toUtc().toIso8601String(),
+  //     remoteGeneration: generation,
+  //     declaredContentLength: metadata.size,
+  //     bytes: Uint8List.fromList(bytes),
+  //   );
+  // }
 
   String? _contentType(String? header) {
     return header?.split(';').first.trim().toLowerCase();

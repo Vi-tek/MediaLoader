@@ -100,7 +100,7 @@ final class MediaRequest {
         key = 'file:${source.filePath ?? source.normalized}';
         break;
       case ImageSourceKind.network:
-      case ImageSourceKind.firebaseStorage:
+      // case ImageSourceKind.firebaseStorage:
       case ImageSourceKind.invalid:
       case ImageSourceKind.unsupported:
         return null;

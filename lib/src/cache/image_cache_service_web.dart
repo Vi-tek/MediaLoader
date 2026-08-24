@@ -130,7 +130,7 @@ final class WebImageCacheService implements ImageCacheService {
           maxBytes: maxBytes,
           ifNoneMatch: existing?.etag,
           ifModifiedSince: existing?.lastModified,
-          firebaseGeneration: existing?.remoteGeneration,
+          // firebaseGeneration: existing?.remoteGeneration,
         ),
       );
       final now = _clock().toUtc();
