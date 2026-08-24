@@ -183,7 +183,7 @@ final class NativeImageCacheService implements ImageCacheService {
         maxBytes: maxDownloadBytes,
         ifNoneMatch: existing?.etag,
         ifModifiedSince: existing?.lastModified,
-        firebaseGeneration: existing?.remoteGeneration,
+        // firebaseGeneration: existing?.remoteGeneration,
       ),
     );
 
@@ -507,15 +507,15 @@ final class NativeImageCacheService implements ImageCacheService {
     return _fileForResource(directory, resource);
   }
 
-  ResolvedImageSource _sourceFromReference(Reference reference) {
-    final encodedPath = reference.fullPath
-        .split('/')
-        .map(Uri.encodeComponent)
-        .join('/');
-    return const ImageSourceResolver().resolve(
-      'gs://${reference.bucket}/$encodedPath',
-    );
-  }
+  // ResolvedImageSource _sourceFromReference(Reference reference) {
+  //   final encodedPath = reference.fullPath
+  //       .split('/')
+  //       .map(Uri.encodeComponent)
+  //       .join('/');
+  //   return const ImageSourceResolver().resolve(
+  //     'gs://${reference.bucket}/$encodedPath',
+  //   );
+  // }
 
   File _fileForResource(Directory directory, CachedImageResource resource) {
     return File(
