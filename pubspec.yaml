@@ -1,0 +1,29 @@
+name: media_loader
+description: >-
+  A self-contained image and media loading library for Flutter: asset, file,
+  network, and Firebase Storage sources; raster, SVG, Lottie, and dotLottie
+  media; persistent disk caching plus in-memory decoded-media caching and
+  startup precaching.
+publish_to: 'none'
+version: 1.0.0
+
+environment:
+  sdk: ^3.10.0
+  flutter: ">=3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  crypto: ^3.0.7
+  firebase_storage: ^13.0.6
+  http: ^1.2.0
+  jovial_svg: ^1.1.29
+  lottie: ^3.2.0
+  path_provider: ^2.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
