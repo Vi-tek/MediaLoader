@@ -167,10 +167,8 @@ final class ImageProviderFactory {
         source.filePath ?? source.normalized,
         scale: scale,
       ),
-
-      //|| ImageSourceKind.firebaseStorage 
-      ImageSourceKind.network 
-      => CachedSourceImageProvider(
+      ImageSourceKind.network ||
+      ImageSourceKind.firebaseStorage => CachedSourceImageProvider(
         source: source,
         cacheService: service,
         scale: scale,

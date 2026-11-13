@@ -1,4 +1,4 @@
-// import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 import 'image_cache_service.dart';
 
@@ -14,15 +14,15 @@ extension LegacyImageCacheServiceApi on ImageCacheService {
     );
   }
 
-  // Future<Never> getImageFromFirebase(Reference reference) {
-  //   return Future<Never>.error(
-  //     UnsupportedError('Filesystem image caching is unavailable on web.'),
-  //   );
-  // }
+  Future<Never> getImageFromFirebase(Reference reference) {
+    return Future<Never>.error(
+      UnsupportedError('Filesystem image caching is unavailable on web.'),
+    );
+  }
 
-  // Future<Never> revalidateFirebaseImage(Reference reference) {
-  //   return Future<Never>.error(
-  //     UnsupportedError('Filesystem image caching is unavailable on web.'),
-  //   );
-  // }
+  Future<Never> revalidateFirebaseImage(Reference reference) {
+    return Future<Never>.error(
+      UnsupportedError('Filesystem image caching is unavailable on web.'),
+    );
+  }
 }

@@ -135,7 +135,7 @@ final class SvgSourceImageProvider extends ImageProvider<SvgSourceImageKey> {
       case ImageSourceKind.file:
         return readPlatformFileBytes(source.filePath ?? source.normalized);
       case ImageSourceKind.network:
-      // case ImageSourceKind.firebaseStorage:
+      case ImageSourceKind.firebaseStorage:
         final resource = await cacheService.resolveRemote(
           source,
           headers: headers,

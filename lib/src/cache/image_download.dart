@@ -8,7 +8,7 @@ final class ImageDownloadRequest {
     required this.maxBytes,
     this.ifNoneMatch,
     this.ifModifiedSince,
-    // this.firebaseGeneration,
+    this.firebaseGeneration,
   });
 
   final Map<String, String> headers;
@@ -16,7 +16,7 @@ final class ImageDownloadRequest {
   final int maxBytes;
   final String? ifNoneMatch;
   final String? ifModifiedSince;
-  // final String? firebaseGeneration;
+  final String? firebaseGeneration;
 }
 
 @immutable

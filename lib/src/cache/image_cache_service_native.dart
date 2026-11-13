@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-// import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path_provider/path_provider.dart';
 import '../core/image_cache_identity.dart';
 import '../core/image_media_detector.dart';
@@ -183,7 +183,7 @@ final class NativeImageCacheService implements ImageCacheService {
         maxBytes: maxDownloadBytes,
         ifNoneMatch: existing?.etag,
         ifModifiedSince: existing?.lastModified,
-        // firebaseGeneration: existing?.remoteGeneration,
+        firebaseGeneration: existing?.remoteGeneration,
       ),
     );
 
@@ -480,26 +480,26 @@ final class NativeImageCacheService implements ImageCacheService {
     return _resolveLegacyFile(source);
   }
 
-  // Future<File> getImageFromFirebase(Reference reference) {
-  //   return _resolveLegacyFile(_sourceFromReference(reference));
-  // }
+  Future<File> getImageFromFirebase(Reference reference) {
+    return _resolveLegacyFile(_sourceFromReference(reference));
+  }
 
-  // Future<File?> revalidateFirebaseImage(Reference reference) async {
-  //   final source = _sourceFromReference(reference);
-  //   final before = peekRemote(
-  //     source,
-  //     cacheDuration: Duration.zero,
-  //     includeStale: true,
-  //   );
-  //   final refreshed = await resolveRemote(
-  //     source,
-  //     cacheDuration: Duration.zero,
-  //     allowStaleOnError: true,
-  //   );
-  //   if (before?.generation == refreshed.generation) return null;
-  //   final directory = await _cacheDirectory();
-  //   return _fileForResource(directory, refreshed);
-  // }
+  Future<File?> revalidateFirebaseImage(Reference reference) async {
+    final source = _sourceFromReference(reference);
+    final before = peekRemote(
+      source,
+      cacheDuration: Duration.zero,
+      includeStale: true,
+    );
+    final refreshed = await resolveRemote(
+      source,
+      cacheDuration: Duration.zero,
+      allowStaleOnError: true,
+    );
+    if (before?.generation == refreshed.generation) return null;
+    final directory = await _cacheDirectory();
+    return _fileForResource(directory, refreshed);
+  }
 
   Future<File> _resolveLegacyFile(ResolvedImageSource source) async {
     final resource = await resolveRemote(source);
@@ -507,15 +507,15 @@ final class NativeImageCacheService implements ImageCacheService {
     return _fileForResource(directory, resource);
   }
 
-  // ResolvedImageSource _sourceFromReference(Reference reference) {
-  //   final encodedPath = reference.fullPath
-  //       .split('/')
-  //       .map(Uri.encodeComponent)
-  //       .join('/');
-  //   return const ImageSourceResolver().resolve(
-  //     'gs://${reference.bucket}/$encodedPath',
-  //   );
-  // }
+  ResolvedImageSource _sourceFromReference(Reference reference) {
+    final encodedPath = reference.fullPath
+        .split('/')
+        .map(Uri.encodeComponent)
+        .join('/');
+    return const ImageSourceResolver().resolve(
+      'gs://${reference.bucket}/$encodedPath',
+    );
+  }
 
   File _fileForResource(Directory directory, CachedImageResource resource) {
     return File(

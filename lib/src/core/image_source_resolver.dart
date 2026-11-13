@@ -78,19 +78,19 @@ final class ImageSourceResolver {
           );
         }
         return _remote(original, uri, ImageSourceKind.network);
-      // case 'gs':
-      //   if (!uri.hasAuthority || uri.host.isEmpty) {
-      //     return ResolvedImageSource(
-      //       original: original,
-      //       normalized: trimmed,
-      //       kind: ImageSourceKind.invalid,
-      //       extensionHint: _extensionFromUri(uri),
-      //       mediaHint: ImageMediaKind.unknown,
-      //       uri: uri,
-      //       error: 'Firebase Storage URI must include a bucket.',
-      //     );
-      //   }
-      //   return _remote(original, uri, ImageSourceKind.firebaseStorage);
+      case 'gs':
+        if (!uri.hasAuthority || uri.host.isEmpty) {
+          return ResolvedImageSource(
+            original: original,
+            normalized: trimmed,
+            kind: ImageSourceKind.invalid,
+            extensionHint: _extensionFromUri(uri),
+            mediaHint: ImageMediaKind.unknown,
+            uri: uri,
+            error: 'Firebase Storage URI must include a bucket.',
+          );
+        }
+        return _remote(original, uri, ImageSourceKind.firebaseStorage);
       default:
         return ResolvedImageSource(
           original: original,

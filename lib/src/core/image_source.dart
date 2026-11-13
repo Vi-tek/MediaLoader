@@ -7,7 +7,7 @@ enum ImageSourceKind {
   asset,
   file,
   network,
-  // firebaseStorage,
+  firebaseStorage,
   unsupported,
 }
 
@@ -46,8 +46,8 @@ final class ResolvedImageSource {
       kind != ImageSourceKind.invalid && kind != ImageSourceKind.unsupported;
 
   bool get isRemote =>
-      kind == ImageSourceKind.network;
-      // || kind == ImageSourceKind.firebaseStorage;
+      kind == ImageSourceKind.network ||
+      kind == ImageSourceKind.firebaseStorage;
 
   bool get isLocal =>
       kind == ImageSourceKind.asset || kind == ImageSourceKind.file;
@@ -55,7 +55,7 @@ final class ResolvedImageSource {
   String get canonicalIdentity {
     switch (kind) {
       case ImageSourceKind.network:
-      // case ImageSourceKind.firebaseStorage:
+      case ImageSourceKind.firebaseStorage:
         final parsed = uri;
         if (parsed == null) return normalized;
         return parsed.replace(fragment: '').toString();

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-// import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 import 'image_cache_service.dart';
 import 'image_cache_service_native.dart';
@@ -26,23 +26,23 @@ extension LegacyImageCacheServiceApi on ImageCacheService {
     );
   }
 
-  // Future<File> getImageFromFirebase(Reference reference) {
-  //   final service = this;
-  //   if (service is NativeImageCacheService) {
-  //     return service.getImageFromFirebase(reference);
-  //   }
-  //   return Future<File>.error(
-  //     UnsupportedError('The active image cache is not filesystem-backed.'),
-  //   );
-  // }
+  Future<File> getImageFromFirebase(Reference reference) {
+    final service = this;
+    if (service is NativeImageCacheService) {
+      return service.getImageFromFirebase(reference);
+    }
+    return Future<File>.error(
+      UnsupportedError('The active image cache is not filesystem-backed.'),
+    );
+  }
 
-  // Future<File?> revalidateFirebaseImage(Reference reference) {
-  //   final service = this;
-  //   if (service is NativeImageCacheService) {
-  //     return service.revalidateFirebaseImage(reference);
-  //   }
-  //   return Future<File?>.error(
-  //     UnsupportedError('The active image cache is not filesystem-backed.'),
-  //   );
-  // }
+  Future<File?> revalidateFirebaseImage(Reference reference) {
+    final service = this;
+    if (service is NativeImageCacheService) {
+      return service.revalidateFirebaseImage(reference);
+    }
+    return Future<File?>.error(
+      UnsupportedError('The active image cache is not filesystem-backed.'),
+    );
+  }
 }
